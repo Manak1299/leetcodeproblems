@@ -1,0 +1,67 @@
+Minimum Amplitude After Changing Elements
+Problem Statement
+
+You are given an array of integers. Your task is to find the minimum possible amplitude after changing up to 3 elements in the array. The amplitude is defined as the difference between the largest and smallest values in the array.
+Examples
+
+Example 1:
+
+    Input: [-1, 3, -1, 8, 5, 4]
+    Output: 2
+    Explanation: By changing the elements -1, -1, 8 to 3, 4, 5, the array can be adjusted to [3, 4, 5, 4, 5, 5]. The amplitude is calculated as 5 - 3 = 2.
+
+Example 2:
+
+    Input: [10, 10, 3, 4, 10]
+    Output: 0
+    Explanation: Changing 3 and 4 to 10 results in an array [10, 10, 10, 10, 10]. The amplitude is 10 - 10 = 0.
+
+Solution
+
+To solve this problem, follow these steps:
+
+    Sort the Array: Start by sorting the array in ascending order.
+
+    Evaluate Different Scenarios:
+        Change the 3 Smallest Elements: Ignore the first 3 elements and compute the amplitude using the remaining elements.
+        Change the 2 Smallest and 1 Largest Element: Ignore the 2 smallest and 1 largest element to get the new amplitude.
+        Change the 1 Smallest and 2 Largest Elements: Ignore 1 smallest and 2 largest elements.
+        Change the 3 Largest Elements: Ignore the last 3 elements and compute the amplitude with the remaining elements.
+
+    Determine the Minimum Amplitude: Calculate the amplitude for each scenario and return the smallest value.
+
+
+Code Implementation:
+
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+var minAmplitude = function(nums) {
+    if (nums.length <= 4) return 0; // If the array has 4 or fewer elements, we can change all to be the same.
+
+    // Sort the array
+    nums.sort((a, b) => a - b);
+
+    // Calculate amplitudes for different scenarios
+    const n = nums.length;
+    const option1 = nums[n - 1] - nums[3]; // Change the 3 smallest elements
+    const option2 = nums[n - 2] - nums[2]; // Change 2 smallest and 1 largest element
+    const option3 = nums[n - 3] - nums[1]; // Change 1 smallest and 2 largest elements
+    const option4 = nums[n - 4] - nums[0]; // Change the 3 largest elements
+
+    // Return the minimum amplitude
+    return Math.min(option1, option2, option3, option4);
+};
+
+Explanation
+
+    Sort the Array: Sorting the array allows you to easily access the smallest and largest values.
+
+    Changing Elements: Consider the following scenarios:
+        Ignoring the 3 Smallest: Compute the range using the largest 3 values.
+        Ignoring 2 Smallest and 1 Largest: Compute the range using the middle values.
+        Ignoring 1 Smallest and 2 Largest: Focus on the middle values by excluding the extreme ones.
+        Ignoring the 3 Largest: Use the smallest values to compute the range.
+
+    Calculate the Minimum Amplitude: Compare the results from different scenarios and select the minimum amplitude.
